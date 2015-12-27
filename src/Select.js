@@ -627,8 +627,11 @@ const Select = React.createClass({
 
 	renderHiddenField (valueArray) {
 		if (!this.props.name) return;
-		let value = valueArray.map(i => stringifyValue(i[this.props.valueKey])).join(this.props.delimiter);
-		return <input type="hidden" ref="value" name={this.props.name} value={value} disabled={this.props.disabled} />;
+		const value = valueArray.map(i => stringifyValue(i[this.props.valueKey])).join(this.props.delimiter);
+		// Using style instead of type="hidden" allows this input to trigger focus events.
+		// Using "display: none" and "visibility: hidden" prevent the input from triggering focus events.
+		const hiddenStyle = { position: 'absolute', height: 0, border: 0, margin: 0, padding: 0 };
+		return <input type="text" style={hiddenStyle} ref="value" name={this.props.name} value={value} disabled={this.props.disabled} />;
 	},
 
 	getFocusableOption (selectedOption) {
